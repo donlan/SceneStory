@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <dong.lan.labelTextview.LabelTextView
+        android:onClick="back"
+        android:textSize="16sp"
+        android:text="返回"
+        app:radius="25dp"
+        android:layout_margin="10dp"
+        app:bg_color="#66ffffff"
+        android:textColor="#222"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+</FrameLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="CircleImageButton">
+        <attr name="cib_bg_color" format="color" />
+    </declare-styleable>
+
+
+
+</resources>

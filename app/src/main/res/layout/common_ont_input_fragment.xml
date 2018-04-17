@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#eee"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textColor="#333"
+            android:textSize="16sp"
+            android:text="取消"
+            android:gravity="center"
+            android:id="@+id/common_one_input_cancel"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:tint="#444" />
+
+        <TextView
+            android:id="@+id/common_one_input_title"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#222"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/common_one_input_check"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:textColor="#333"
+            android:textSize="16sp"
+            android:text="保存"
+            android:tint="#444" />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/common_one_input_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:minHeight="80dp"
+        android:padding="6dp"
+        android:textSize="18sp" />
+</LinearLayout>
