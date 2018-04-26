@@ -13,15 +13,13 @@ import gui.dong.scenestory.bean.Story;
 import io.realm.Realm;
 
 /**
- * @author 梁桂栋
- * @version 1.0
- * @date 2018/4/8  20:09.
- * e-mail 760625325@qq.com
- * GitHub: https://github.com/donlan
- * description: gui.dong.scenestory.ui
+ * 场景故事比方页面
  */
 public class StoryPlayActivity extends AppCompatActivity {
 
+    /**
+     * 通过VideoView播放MP4文件，场景故事已MP4文件的形式保存在本地
+     */
     private VideoView videoView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,11 +31,14 @@ public class StoryPlayActivity extends AppCompatActivity {
         if(!getIntent().hasExtra("storyId")){
             finish();
         }else{
+            //通过id从数据库找到对应的场景故事
             Story story = Realm.getDefaultInstance()
                     .where(Story.class)
                     .equalTo("id",getIntent().getStringExtra("storyId"))
                     .findFirst();
+            //story中保存着故事的MP4文件在手机的存储地址
             if(story!=null){
+                //videoview通过文件地址就可以播放该MP4文件
                 videoView.setVideoPath(story.getLocalPath());
                 videoView.start();
             }else{
@@ -53,6 +54,7 @@ public class StoryPlayActivity extends AppCompatActivity {
                 }
             });
 
+            //播放完毕，自动重新开始
             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {

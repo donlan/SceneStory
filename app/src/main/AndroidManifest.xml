@@ -41,6 +41,7 @@
         <service android:name=".RecorderService"
             />
         <service android:name=".task.UploadStoryTask" />
+        <service android:name=".task.FetchStoryTask" />
     </application>
 
 </manifest>

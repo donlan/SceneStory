@@ -14,14 +14,6 @@ import android.os.IBinder;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @author 梁桂栋
- * @version 1.0
- * @date 2018/4/8  18:17.
- * e-mail 760625325@qq.com
- * GitHub: https://github.com/donlan
- * description: gui.dong.scenestory
- */
 public class RecorderService extends Service {
     private MediaProjection mediaProjection;
     private MediaRecorder mediaRecorder;
@@ -51,6 +43,7 @@ public class RecorderService extends Service {
                 android.os.Process.THREAD_PRIORITY_BACKGROUND);
         serviceThread.start();
         running = false;
+        //Android提供的屏幕录制功能
         mediaRecorder = new MediaRecorder();
     }
 
@@ -73,6 +66,10 @@ public class RecorderService extends Service {
         this.dpi = dpi;
     }
 
+    /**
+     * 开始录制
+     * @return
+     */
     public boolean startRecord() {
         if (mediaProjection == null || running) {
             return false;
@@ -85,6 +82,10 @@ public class RecorderService extends Service {
         return true;
     }
 
+    /**
+     * 结束录制
+     * @return
+     */
     public boolean stopRecord() {
         if (!running) {
             return false;
@@ -103,15 +104,22 @@ public class RecorderService extends Service {
     }
 
     private void initRecorder() {
+        //初始化录制参数
+
+        //录制视频保存的地址
         path= getSaveDirectory() + System.currentTimeMillis() + ".mp4";
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setOutputFile(path);
+        //宽高
         mediaRecorder.setVideoSize(width, height);
+        //视频编码
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        //音频编码
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024);
+        //帧率
         mediaRecorder.setVideoFrameRate(30);
         try {
             mediaRecorder.prepare();
@@ -124,6 +132,10 @@ public class RecorderService extends Service {
         return path;
     }
 
+    /**
+     *
+     * @return 视频保存的目录
+     */
     public String getSaveDirectory() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             String rootDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "story" + "/";

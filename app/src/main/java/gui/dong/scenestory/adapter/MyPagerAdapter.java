@@ -6,13 +6,6 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-/**
- * 作者：梁桂栋
- * 日期： 2015/12/7  05:37.
- * <p>
- * <p>
- * 引导页的滑动 PagerAdapter
- */
 public class MyPagerAdapter extends PagerAdapter {
 
 

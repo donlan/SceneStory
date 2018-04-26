@@ -8,7 +8,9 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 
 
-
+/**
+ * 显示圆形背景的按钮控件
+ */
 public class CircleImageButton extends android.support.v7.widget.AppCompatImageButton {
 
     private int bg_color = Color.BLUE;

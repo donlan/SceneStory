@@ -20,14 +20,6 @@ import gui.dong.scenestory.bean.Story;
 import gui.dong.scenestory.utils.FileUtil;
 import io.realm.Realm;
 
-/**
- * @author 梁桂栋
- * @version 1.0
- * @date 2018/4/14  19:39.
- * e-mail 760625325@qq.com
- * GitHub: https://github.com/donlan
- * description: gui.dong.scenestory.task
- */
 public class FetchStoryTask extends IntentService {
 
     public static void start(Context context){

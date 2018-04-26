@@ -11,12 +11,6 @@ import android.widget.Toast;
 
 import java.io.File;
 
-/**
- * Created by 梁桂栋 on 17-2-9 ： 下午6:18.
- * Email:       760625325@qq.com
- * GitHub:      github.com/donlan
- * description: SmartTrip
- */
 
 public final class FileUtils {
     private FileUtils() {

@@ -47,6 +47,9 @@ import gui.dong.scenestory.utils.DisplayUtils;
 import gui.dong.scenestory.utils.ImageResource;
 import io.realm.Realm;
 
+/**
+ * 创建故事页面
+ */
 public class CreateStoryActivity extends AppCompatActivity implements View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
 
     private StickerView stickerView;
@@ -56,7 +59,6 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
     private ImageView toggleIb;
 
 
-    private List<Sticker> stickers = new ArrayList<>();
     private MediaProjectionManager projectionManager;
     private MediaProjection mediaProjection;
     private ViewPager viewPager;
@@ -81,7 +83,6 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         toggleIb.setOnClickListener(this);
 
 
-
         stickerView.setOnStickerOperationListener(new StickerView.OnStickerOperationListener() {
             @Override
             public void onStickerAdded(@NonNull Sticker sticker) {
@@ -100,11 +101,31 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onStickerDragFinished(@NonNull Sticker sticker) {
-                int r = DisplayUtils.dip2px(CreateStoryActivity.this,25);
-                if(sticker.contains(deleteBin.getX()+r ,deleteBin.getY()+r)){
+                int r = DisplayUtils.dip2px(CreateStoryActivity.this, 25);
+                //移动到右上角垃圾箱位置，则删除
+                if (sticker.contains(deleteBin.getX() + r, deleteBin.getY() + r)) {
                     stickerView.remove(sticker);
-                    stickers.remove(sticker);
+                } else {
+                    //拖动结束如果重叠则进行合并
+                    int i = stickerView.getStickers().indexOf(sticker);
+                    Sticker backSticker = null;
+                    //从当前推动的素材往下层寻找。找到第一个重叠的
+                    if(i-1>=0) {
+                        float[] bound = new float[8];
+                        stickerView.getStickerPoints(stickerView.getStickers().get(i-1), bound);
+                        if (stickerView.isContains(stickerView.getStickers().get(i-1),sticker)) {
+                            backSticker = stickerView.getStickers().get(i-1);
+                        }
+                    }
+                    if (backSticker != null) {
+                        stickerView.concat(backSticker, sticker);
+                    }
                 }
+            }
+
+            @Override
+            public void onStickerTouchedDown(@NonNull Sticker sticker) {
+
             }
 
             @Override
@@ -119,8 +140,8 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onStickerDoubleTapped(@NonNull Sticker sticker) {
-                stickerView.remove(sticker);
-                stickers.remove(sticker);
+                //双击素材进行水平镜像替换
+                stickerView.flip(sticker, StickerView.FLIP_HORIZONTALLY);
             }
         });
 
@@ -130,70 +151,77 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         initPager();
     }
 
+    /**
+     * 初始化素材资源
+     */
     private void initPager() {
-        List<View> pagerViews  = new ArrayList<>();
-        LinearLayoutManager llm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        List<View> pagerViews = new ArrayList<>();
+        LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView one = new RecyclerView(this);
         one.setLayoutManager(llm);
         one.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        one.setAdapter(new CharacterAdapter(this, ImageResource.getLocalCharacter(this,"scene_",20,true)));
+        one.setAdapter(new CharacterAdapter(this, ImageResource.getLocalCharacter(this, "scene_", 20, true)));
         one.setTag("场景");
         pagerViews.add(one);
 
         RecyclerView two = new RecyclerView(this);
-        two.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        two.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         two.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        two.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this,"tool_",32,false)));
+        two.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "tool_", 32, false)));
         two.setTag("道具");
         pagerViews.add(two);
 
         RecyclerView three = new RecyclerView(this);
-        three.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        three.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         three.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        three.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this,"animal_",26,false)));
+        three.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "animal_", 26, false)));
         three.setTag("动物");
         pagerViews.add(three);
 
         RecyclerView four = new RecyclerView(this);
-        four.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        four.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         four.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        four.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this,"boy_",17,false)));
+        four.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "boy_", 17, false)));
         four.setTag("男孩");
         pagerViews.add(four);
 
         RecyclerView five = new RecyclerView(this);
-        five.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        five.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         five.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        five.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this,"girl_",15,false)));
+        five.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "girl_", 15, false)));
         five.setTag("女孩");
         pagerViews.add(five);
 
         RecyclerView six = new RecyclerView(this);
-        six.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        six.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         six.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        six.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this,"man_",17,false)));
+        six.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "man_", 17, false)));
         six.setTag("男性人物");
         pagerViews.add(six);
 
         RecyclerView seven = new RecyclerView(this);
-        seven.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        seven.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         seven.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        seven.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this,"woman_",14,false)));
+        seven.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "woman_", 14, false)));
         seven.setTag("女性人物");
         pagerViews.add(seven);
         viewPager.setAdapter(new MyPagerAdapter(pagerViews));
         tabLayout.setupWithViewPager(viewPager);
+
+        stickerView.setEnableBorder(true);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.record_ib:
-                if(recordService.isRunning()){
+                //如果正在录制，点击后停止录制，并保存录制的MP4文件到本地，并保存录制记录到数据库
+                if (recordService.isRunning()) {
+                    stickerView.setEnableBorder(true);
                     toggleIb.setVisibility(View.VISIBLE);
                     deleteBin.setVisibility(View.VISIBLE);
                     recordIb.setImageResource(R.drawable.ic_play_arrow);
-                    if(recordService.stopRecord()){
+                    if (recordService.stopRecord()) {
                         CommonOneInputFragment.newInstance("故事名称", "给录制的故事起个名字", new CommonInputListener() {
                             @Override
                             public void onInputCommit(final String inputText) {
@@ -201,7 +229,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                                     @Override
                                     public void execute(Realm realm) {
                                         story = new Story();
-                                        story.setName(!TextUtils.isEmpty(inputText)?inputText:"我的故事"+realm.where(Story.class).count());
+                                        story.setName(!TextUtils.isEmpty(inputText) ? inputText : "我的故事" + realm.where(Story.class).count());
                                         story.setCreatorId(AVUser.getCurrentUser().getUsername());
                                         story.setId(UUID.randomUUID().toString());
                                         story.setCreatedAt(System.currentTimeMillis());
@@ -209,26 +237,30 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                                         realm.copyToRealm(story);
                                     }
                                 });
-                                UploadStoryTask.start(CreateStoryActivity.this.getApplicationContext(),story.getId());
+                                UploadStoryTask.start(CreateStoryActivity.this.getApplicationContext(), story.getId());
                                 finish();
                             }
-                        }).show(getSupportFragmentManager(),"");
+                        }).show(getSupportFragmentManager(), "");
 
                     }
-                }else{
+                } else {
+                    //未在录制则开始进行屏幕录制
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
                     toggleIb.setVisibility(View.GONE);
                     deleteBin.setVisibility(View.GONE);
-                    Intent captureIntent= projectionManager.createScreenCaptureIntent();
+                    stickerView.setEnableBorder(false);
+                    Intent captureIntent = projectionManager.createScreenCaptureIntent();
                     startActivityForResult(captureIntent, 3);
                 }
                 break;
+
             case R.id.panel_toggle_ib:
-                if(tabLayout.getVisibility() ==View.VISIBLE){
+                //素材选择栏可见或者不可见
+                if (tabLayout.getVisibility() == View.VISIBLE) {
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
-                }else{
+                } else {
                     tabLayout.setVisibility(View.VISIBLE);
                     viewPager.setVisibility(View.VISIBLE);
                 }
@@ -242,7 +274,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         if (requestCode == 3 && resultCode == RESULT_OK) {
             mediaProjection = projectionManager.getMediaProjection(resultCode, data);
             recordService.setMediaProject(mediaProjection);
-            if(recordService.isRunning()){
+            if (recordService.isRunning()) {
                 recordService.stopRecord();
             }
             recordService.startRecord();
@@ -250,10 +282,14 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    /**
+     * 这是屏幕录制的后台服务，与当前页面进行绑定
+     */
     private RecorderService recordService;
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
+            //录制服务启动并绑定成功，进行屏幕录制相关资源的初始化
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
             RecorderService.RecordBinder binder = (RecorderService.RecordBinder) service;
@@ -264,29 +300,38 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         }
 
         @Override
-        public void onServiceDisconnected(ComponentName arg0) {}
+        public void onServiceDisconnected(ComponentName arg0) {
+        }
     };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(recordService.isRunning()){
+        if (recordService.isRunning()) {
             recordService.stopRecord();
         }
         unbindService(connection);
     }
 
+    /**
+     * 素材点击的回调方法
+     *
+     * @param adapter
+     * @param view
+     * @param position
+     */
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         IStoryElement element = (IStoryElement) adapter.getItem(position);
-        if(element.isScene()){
+        //如果点击的是背景素材，则设置背景图片
+        if (element.isScene()) {
             Glide.with(sceneImg)
                     .load(element.resId())
                     .into(sceneImg);
-        }else{
+        } else {
+            //点击的是普通的素材，则生成并添加一个素材
             BitmapStickerIcon stickerIcon = new BitmapStickerIcon(((ImageView) view).getDrawable(), BitmapStickerIcon.LEFT_BOTTOM);
             stickerView.addSticker(stickerIcon);
-            stickers.add(stickerIcon);
         }
     }
 }

@@ -10,14 +10,6 @@ import gui.dong.scenestory.bean.Character;
 import gui.dong.scenestory.bean.IStoryElement;
 import gui.dong.scenestory.bean.Scene;
 
-/**
- * @author 梁桂栋
- * @version 1.0
- * @date 2018/4/8  14:03.
- * e-mail 760625325@qq.com
- * GitHub: https://github.com/donlan
- * description: gui.dong.scenestory.utils
- */
 public class ImageResource {
 
 

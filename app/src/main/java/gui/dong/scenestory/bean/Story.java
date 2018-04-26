@@ -2,14 +2,6 @@ package gui.dong.scenestory.bean;
 
 import io.realm.RealmObject;
 
-/**
- * @author 梁桂栋
- * @version 1.0
- * @date 2018/4/8  19:15.
- * e-mail 760625325@qq.com
- * GitHub: https://github.com/donlan
- * description: gui.dong.scenestory.bean
- */
 public class Story extends RealmObject {
 
     private String id;

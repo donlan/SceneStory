@@ -15,14 +15,6 @@ import gui.dong.scenestory.R;
 import gui.dong.scenestory.bean.Story;
 import io.realm.RealmResults;
 
-/**
- * @author 梁桂栋
- * @version 1.0
- * @date 2018/4/8  19:48.
- * e-mail 760625325@qq.com
- * GitHub: https://github.com/donlan
- * description: gui.dong.scenestory.adapter
- */
 public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> {
 
     private boolean isShowCache;
