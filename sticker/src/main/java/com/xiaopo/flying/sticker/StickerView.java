@@ -144,6 +144,7 @@ public class StickerView extends FrameLayout {
 
     public void setEnableBorder(boolean enableBorder) {
         this.enableBorder = enableBorder;
+        invalidate();
     }
 
     public void configDefaultIcons() {
@@ -914,6 +915,7 @@ public class StickerView extends FrameLayout {
         float left = Math.min(Math.min(backBound[0], upBound[0]), Math.min(backBound[2], upBound[2]));
         float right = Math.max(Math.max(backBound[2], upBound[2]), Math.max(backBound[6], upBound[6]));
         float bottom = Math.max(Math.max(backBound[5], upBound[5]), Math.max(backBound[7], upBound[7]));
+        Log.e("test",left+","+top+"  "+right+","+bottom);
         //根据合成的矩形边界生成对应大小的画布
         Bitmap bitmap = Bitmap.createBitmap((int) (right - left), (int) (bottom - top), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -924,11 +926,11 @@ public class StickerView extends FrameLayout {
         Matrix backMatrix = new Matrix();
         Matrix upMatrix = new Matrix();
 
-        backMatrix.postRotate(backSticker.getCurrentAngle());
         backMatrix.postScale(backSticker.getMatrixValue(backSticker.getMatrix(),Matrix.MSCALE_X), backSticker.getMatrixValue(backSticker.getMatrix(),Matrix.MSCALE_Y));
+        backMatrix.postRotate(backSticker.getCurrentAngle());
         backMatrix.postTranslate(backBound[0] - left, backBound[1] - top);
-        upMatrix.postRotate(upSticker.getCurrentAngle());
         upMatrix.postScale(upSticker.getMatrixValue(upSticker.getMatrix(),Matrix.MSCALE_X), upSticker.getMatrixValue(upSticker.getMatrix(),Matrix.MSCALE_Y));
+        upMatrix.postRotate(upSticker.getCurrentAngle());
         upMatrix.postTranslate(upBound[0] - left, upBound[1] - top);
         //将经过缩放，旋转，平移的素材重新会知道画布上
         canvas.drawBitmap(((BitmapDrawable) backSticker.getDrawable()).getBitmap(),
@@ -940,8 +942,7 @@ public class StickerView extends FrameLayout {
                 paint
         );
         //从画布取出绘制结果，并添加到当前的场景中
-        BitmapStickerIcon bitmapStickerIcon = new BitmapStickerIcon(new BitmapDrawable(bitmap), BitmapStickerIcon.LEFT_TOP);
-        float scale = backSticker.getCurrentScale();
+        BitmapStickerIcon bitmapStickerIcon = new BitmapStickerIcon(new BitmapDrawable(getResources(),bitmap), BitmapStickerIcon.LEFT_TOP);
         if (stickers.remove(upSticker)) {
             stickers.remove(backSticker);
             addSticker(bitmapStickerIcon);
@@ -1025,11 +1026,20 @@ public class StickerView extends FrameLayout {
         invalidate();
     }
 
+    /**
+     * 判断两个素材在页面显示中是否重合
+     * @param backSticker
+     * @param upSticker
+     * @return
+     */
     public boolean isContains(Sticker backSticker, Sticker upSticker) {
         float[] backBound = new float[8];
         float[] upBound = new float[8];
         getStickerPoints(backSticker, backBound);
         getStickerPoints(upSticker, upBound);
+        /**
+         * 上面的素材的四个角的坐标是否在下面的素材的矩形区域内
+         */
         Region region = new Region();
         region.set((int) backBound[0], (int) backBound[1], (int) backBound[6], (int) backBound[7]);
         if (region.contains((int) upBound[0], (int) upBound[1])) {
@@ -1044,7 +1054,9 @@ public class StickerView extends FrameLayout {
         if (region.contains((int) upBound[6], (int) upBound[7])) {
             return true;
         }
-
+        /**
+         * 下面的素材的四个角的坐标是否在上面的素材的矩形区域内
+         */
         region.set((int) upBound[0], (int) upBound[1], (int) upBound[6], (int) upBound[7]);
         if (region.contains((int) backBound[0], (int) backBound[1])) {
             return true;

@@ -3,6 +3,9 @@ package gui.dong.scenestory.ui;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
@@ -31,6 +34,7 @@ import com.xiaopo.flying.sticker.StickerView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import gui.dong.scenestory.CircleImageButton;
 import gui.dong.scenestory.R;
@@ -38,13 +42,19 @@ import gui.dong.scenestory.RecorderService;
 import gui.dong.scenestory.adapter.CharacterAdapter;
 import gui.dong.scenestory.adapter.MyPagerAdapter;
 import gui.dong.scenestory.adapter.SceneAdapter;
+import gui.dong.scenestory.adapter.SoundAdapter;
 import gui.dong.scenestory.bean.IStoryElement;
+import gui.dong.scenestory.bean.Sound;
 import gui.dong.scenestory.bean.Story;
 import gui.dong.scenestory.task.UploadStoryTask;
 import gui.dong.scenestory.utils.CommonInputListener;
 import gui.dong.scenestory.utils.CommonOneInputFragment;
 import gui.dong.scenestory.utils.DisplayUtils;
-import gui.dong.scenestory.utils.ImageResource;
+import gui.dong.scenestory.utils.SceneResource;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.realm.Realm;
 
 /**
@@ -64,6 +74,8 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Story story;
+    private MediaPlayer mediaPlayer;
+    private int lastSoundIndex = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,26 +112,43 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
             }
 
             @Override
-            public void onStickerDragFinished(@NonNull Sticker sticker) {
+            public void onStickerDragFinished(@NonNull final Sticker sticker) {
                 int r = DisplayUtils.dip2px(CreateStoryActivity.this, 25);
                 //移动到右上角垃圾箱位置，则删除
                 if (sticker.contains(deleteBin.getX() + r, deleteBin.getY() + r)) {
                     stickerView.remove(sticker);
                 } else {
                     //拖动结束如果重叠则进行合并
-                    int i = stickerView.getStickers().indexOf(sticker);
-                    Sticker backSticker = null;
-                    //从当前推动的素材往下层寻找。找到第一个重叠的
-                    if(i-1>=0) {
-                        float[] bound = new float[8];
-                        stickerView.getStickerPoints(stickerView.getStickers().get(i-1), bound);
-                        if (stickerView.isContains(stickerView.getStickers().get(i-1),sticker)) {
-                            backSticker = stickerView.getStickers().get(i-1);
+                    Observable.just(sticker)
+                            .delay(500, TimeUnit.MILLISECONDS)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .map(new Function<Sticker, Sticker>() {
+                                @Override
+                                public Sticker apply(Sticker sticker) throws Exception {
+                                    int i = stickerView.getStickers().indexOf(sticker);
+                                    Sticker backSticker = null;
+                                    //从当前推动的素材往下层寻找。找到第一个重叠的
+                                    if (i - 1 >= 0) {
+                                        float[] bound = new float[8];
+                                        stickerView.getStickerPoints(stickerView.getStickers().get(i - 1), bound);
+                                        if (stickerView.isContains(stickerView.getStickers().get(i - 1), sticker)) {
+                                            backSticker = stickerView.getStickers().get(i - 1);
+                                        }
+                                    }
+                                    return backSticker;
+                                }
+                            }).subscribe(new Consumer<Sticker>() {
+                        @Override
+                        public void accept(Sticker backSticker) throws Exception {
+                            stickerView.concat(backSticker, sticker);
                         }
-                    }
-                    if (backSticker != null) {
-                        stickerView.concat(backSticker, sticker);
-                    }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            throwable.printStackTrace();
+                        }
+                    });
+
                 }
             }
 
@@ -148,6 +177,8 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         Intent intent = new Intent(this, RecorderService.class);
         bindService(intent, connection, BIND_AUTO_CREATE);
 
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setLooping(true);
         initPager();
     }
 
@@ -158,53 +189,96 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         List<View> pagerViews = new ArrayList<>();
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView one = new RecyclerView(this);
+        one.setBackgroundColor(Color.WHITE);
         one.setLayoutManager(llm);
         one.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        one.setAdapter(new CharacterAdapter(this, ImageResource.getLocalCharacter(this, "scene_", 20, true)));
+        one.setAdapter(new CharacterAdapter(this, SceneResource.getLocalCharacter(this, "scene_", 20, true)));
         one.setTag("场景");
         pagerViews.add(one);
 
         RecyclerView two = new RecyclerView(this);
         two.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         two.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        two.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "tool_", 32, false)));
+        two.setAdapter(new SceneAdapter(this, SceneResource.getLocalCharacter(this, "tool_", 32, false)));
         two.setTag("道具");
         pagerViews.add(two);
 
         RecyclerView three = new RecyclerView(this);
         three.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         three.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        three.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "animal_", 26, false)));
+        three.setAdapter(new SceneAdapter(this, SceneResource.getLocalCharacter(this, "animal_", 26, false)));
         three.setTag("动物");
         pagerViews.add(three);
 
         RecyclerView four = new RecyclerView(this);
         four.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         four.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        four.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "boy_", 17, false)));
+        four.setAdapter(new SceneAdapter(this, SceneResource.getLocalCharacter(this, "boy_", 17, false)));
         four.setTag("男孩");
         pagerViews.add(four);
 
         RecyclerView five = new RecyclerView(this);
         five.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         five.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        five.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "girl_", 15, false)));
+        five.setAdapter(new SceneAdapter(this, SceneResource.getLocalCharacter(this, "girl_", 15, false)));
         five.setTag("女孩");
         pagerViews.add(five);
 
         RecyclerView six = new RecyclerView(this);
         six.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         six.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        six.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "man_", 17, false)));
+        six.setAdapter(new SceneAdapter(this, SceneResource.getLocalCharacter(this, "man_", 17, false)));
         six.setTag("男性人物");
         pagerViews.add(six);
 
         RecyclerView seven = new RecyclerView(this);
         seven.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         seven.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        seven.setAdapter(new SceneAdapter(this, ImageResource.getLocalCharacter(this, "woman_", 14, false)));
+        seven.setAdapter(new SceneAdapter(this, SceneResource.getLocalCharacter(this, "woman_", 14, false)));
         seven.setTag("女性人物");
         pagerViews.add(seven);
+
+
+        RecyclerView soundRv = new RecyclerView(this);
+        soundRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        soundRv.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        SoundAdapter soundAdapter = new SoundAdapter(SceneResource.getBackgroudSound());
+        soundAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Sound sound = (Sound) adapter.getData().get(position);
+                if(position != lastSoundIndex && lastSoundIndex!=-1){
+                   ((Sound) adapter.getData().get(lastSoundIndex)).togglePlaying();
+                    adapter.notifyItemChanged(lastSoundIndex);
+                }
+                sound.togglePlaying();
+                adapter.notifyItemChanged(position);
+
+                if(position == lastSoundIndex){
+                    if(mediaPlayer.isPlaying()){
+                        mediaPlayer.pause();
+                    }else{
+                        mediaPlayer.start();
+                    }
+                    return;
+                }
+                lastSoundIndex = position;
+
+                AssetFileDescriptor afd = getResources().openRawResourceFd(sound.getRawId());
+                try {
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                    afd.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        soundRv.setAdapter(soundAdapter);
+        soundRv.setTag("背景音乐");
+        pagerViews.add(soundRv);
         viewPager.setAdapter(new MyPagerAdapter(pagerViews));
         tabLayout.setupWithViewPager(viewPager);
 
