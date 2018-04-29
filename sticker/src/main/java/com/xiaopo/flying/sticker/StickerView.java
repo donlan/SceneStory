@@ -28,7 +28,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -167,29 +166,9 @@ public class StickerView extends FrameLayout {
         icons.add(flipIcon);
     }
 
-    /**
-     * Swaps sticker at layer [[oldPos]] with the one at layer [[newPos]].
-     * Does nothing if either of the specified layers doesn't exist.
-     */
-    public void swapLayers(int oldPos, int newPos) {
-        if (stickers.size() >= oldPos && stickers.size() >= newPos) {
-            Collections.swap(stickers, oldPos, newPos);
-            invalidate();
-        }
-    }
 
-    /**
-     * Sends sticker from layer [[oldPos]] to layer [[newPos]].
-     * Does nothing if either of the specified layers doesn't exist.
-     */
-    public void sendToLayer(int oldPos, int newPos) {
-        if (stickers.size() >= oldPos && stickers.size() >= newPos) {
-            Sticker s = stickers.get(oldPos);
-            stickers.remove(oldPos);
-            stickers.add(newPos, s);
-            invalidate();
-        }
-    }
+
+
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -482,10 +461,19 @@ public class StickerView extends FrameLayout {
         }
     }
 
+    /**
+     * 对当前操控的贴图进行缩放旋转
+     * @param event
+     */
     public void zoomAndRotateCurrentSticker(@NonNull MotionEvent event) {
         zoomAndRotateSticker(handlingSticker, event);
     }
 
+    /**
+     * 对贴图进行缩放旋转
+     * @param sticker 指定需要缩放旋转的贴图
+     * @param event
+     */
     public void zoomAndRotateSticker(@Nullable Sticker sticker, @NonNull MotionEvent event) {
         if (sticker != null) {
             float newDistance = calculateDistance(midPoint.x, midPoint.y, event.getX(), event.getY());
@@ -499,6 +487,10 @@ public class StickerView extends FrameLayout {
         }
     }
 
+    /**
+     * 控制贴图的平移
+     * @param sticker
+     */
     protected void constrainSticker(@NonNull Sticker sticker) {
         float moveX = 0;
         float moveY = 0;

@@ -70,7 +70,6 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
 
 
     private MediaProjectionManager projectionManager;
-    private MediaProjection mediaProjection;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Story story;
@@ -120,7 +119,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     //拖动结束如果重叠则进行合并
                     Observable.just(sticker)
-                            .delay(500, TimeUnit.MILLISECONDS)
+                            .delay(200, TimeUnit.MILLISECONDS)
                             .observeOn(AndroidSchedulers.mainThread())
                             .map(new Function<Sticker, Sticker>() {
                                 @Override
@@ -128,11 +127,12 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                                     int i = stickerView.getStickers().indexOf(sticker);
                                     Sticker backSticker = null;
                                     //从当前推动的素材往下层寻找。找到第一个重叠的
-                                    if (i - 1 >= 0) {
+                                    for (int n = i - 1; n >= 0; n--) {
                                         float[] bound = new float[8];
-                                        stickerView.getStickerPoints(stickerView.getStickers().get(i - 1), bound);
-                                        if (stickerView.isContains(stickerView.getStickers().get(i - 1), sticker)) {
-                                            backSticker = stickerView.getStickers().get(i - 1);
+                                        stickerView.getStickerPoints(stickerView.getStickers().get(n), bound);
+                                        if (stickerView.isContains(stickerView.getStickers().get(n), sticker)) {
+                                            backSticker = stickerView.getStickers().get(n);
+                                            break;
                                         }
                                     }
                                     return backSticker;
@@ -240,30 +240,32 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
 
 
         RecyclerView soundRv = new RecyclerView(this);
-        soundRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        soundRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         soundRv.setLayoutParams(new RecyclerView.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         SoundAdapter soundAdapter = new SoundAdapter(SceneResource.getBackgroudSound());
         soundAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Sound sound = (Sound) adapter.getData().get(position);
-                if(position != lastSoundIndex && lastSoundIndex!=-1){
-                   ((Sound) adapter.getData().get(lastSoundIndex)).togglePlaying();
+                if (position != lastSoundIndex && lastSoundIndex != -1) {
+                    ((Sound) adapter.getData().get(lastSoundIndex)).togglePlaying();
                     adapter.notifyItemChanged(lastSoundIndex);
                 }
                 sound.togglePlaying();
                 adapter.notifyItemChanged(position);
 
-                if(position == lastSoundIndex){
-                    if(mediaPlayer.isPlaying()){
+                //重复点击同一个，则只做暂停、播放切换
+                if (position == lastSoundIndex) {
+                    if (mediaPlayer.isPlaying()) {
                         mediaPlayer.pause();
-                    }else{
+                    } else {
                         mediaPlayer.start();
                     }
                     return;
                 }
                 lastSoundIndex = position;
 
+                //加载音频资源到播放器
                 AssetFileDescriptor afd = getResources().openRawResourceFd(sound.getRawId());
                 try {
                     mediaPlayer.reset();
@@ -346,7 +348,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 3 && resultCode == RESULT_OK) {
-            mediaProjection = projectionManager.getMediaProjection(resultCode, data);
+            MediaProjection mediaProjection = projectionManager.getMediaProjection(resultCode, data);
             recordService.setMediaProject(mediaProjection);
             if (recordService.isRunning()) {
                 recordService.stopRecord();
