@@ -1065,21 +1065,56 @@ public class StickerView extends FrameLayout {
         return false;
     }
 
+    /**
+     * 贴图操作回调接口
+     */
     public interface OnStickerOperationListener {
+        /**
+         * 新添加一个贴图时回调
+         * @param sticker
+         */
         void onStickerAdded(@NonNull Sticker sticker);
 
+        /**
+         * 贴图被点击时回调
+         * @param sticker
+         */
         void onStickerClicked(@NonNull Sticker sticker);
 
+        /**
+         * 贴图被删除的时候回调
+         * @param sticker
+         */
         void onStickerDeleted(@NonNull Sticker sticker);
 
+        /**
+         * 贴图拖动结束（手指离开屏幕）时回调
+         * @param sticker
+         */
         void onStickerDragFinished(@NonNull Sticker sticker);
 
+        /**
+         * 手指刚按下贴图的时候回调
+         * @param sticker
+         */
         void onStickerTouchedDown(@NonNull Sticker sticker);
 
+        /**
+         * 双指对贴图缩放结束时回调
+         * @param sticker
+         */
         void onStickerZoomFinished(@NonNull Sticker sticker);
 
+        /**
+         * 对贴图镜像翻转后回调
+         * @param sticker
+         */
         void onStickerFlipped(@NonNull Sticker sticker);
 
+        /**
+         * 双击贴图时回调
+         * @param sticker
+         */
         void onStickerDoubleTapped(@NonNull Sticker sticker);
     }
 }
