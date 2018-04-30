@@ -9,6 +9,6 @@
 * [Matrix 控制图形变换](https://blog.csdn.net/cquwentao/article/details/51445269)
 * 贴图页面使用了自定义view [自定义view相关](https://blog.csdn.net/carson_ho/article/details/56009827)
 * 关键词 **Activity**,**Fragment**,**Service**,**IntentService**,**ViewPager**
-* [Android屏幕录制](https://github.com/glt/ScreenRecorder)
+* [Android屏幕录制](https://github.com/glt/ScreenRecorder)，[相关链接](https://www.jianshu.com/p/e9a9771eb7b8)
 * Java基础：抽象类，继承，接口，重载
 

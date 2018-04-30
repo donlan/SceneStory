@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //如果是从注册页面放回的用户名密码，说明注册成功，直接已返回的用户名密码斤西瓜登录
+        //如果是从注册页面放回的用户名密码，说明注册成功，直接已返回的用户名密码直接登录
         if (requestCode == 1 && data != null) {
             login(data.getStringExtra("account"), data.getStringExtra("password"));
         }

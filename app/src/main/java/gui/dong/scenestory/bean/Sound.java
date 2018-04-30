@@ -1,13 +1,5 @@
 package gui.dong.scenestory.bean;
 
-/**
- * @author 梁桂栋
- * @version 1.0
- * @date 2018/4/27  20:48.
- * e-mail 760625325@qq.com
- * GitHub: https://github.com/donlan
- * description: gui.dong.scenestory.bean
- */
 public class Sound {
     private boolean isPlaying;
     private String name;
