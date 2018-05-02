@@ -935,9 +935,11 @@ public class StickerView extends FrameLayout {
         );
         //从画布取出绘制结果，并添加到当前的场景中
         BitmapStickerIcon bitmapStickerIcon = new BitmapStickerIcon(new BitmapDrawable(getResources(),bitmap), BitmapStickerIcon.LEFT_TOP);
+        bitmapStickerIcon.getMatrix().postTranslate(left, top);
         if (stickers.remove(upSticker)) {
             stickers.remove(backSticker);
-            addSticker(bitmapStickerIcon);
+            stickers.add(bitmapStickerIcon);
+            invalidate();
         }
     }
 
