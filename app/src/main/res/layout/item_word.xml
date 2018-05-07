@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/item_word_icon"
+        android:src="@drawable/u48"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+    <TextView
+        android:id="@+id/item_word_name"
+        android:text="羊"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:layout_constraintLeft_toRightOf="@id/item_word_icon"
+        app:layout_constraintTop_toTopOf="@id/item_word_icon"
+        app:layout_constraintBottom_toTopOf="@+id/item_word_en_name"
+        android:textColor="#222"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:id="@+id/item_word_en_name"
+        android:text="sheep"
+        app:layout_constraintLeft_toRightOf="@id/item_word_icon"
+        app:layout_constraintTop_toBottomOf="@id/item_word_name"
+        app:layout_constraintBottom_toBottomOf="@id/item_word_icon"
+        android:textColor="#222"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <dong.lan.labelTextview.LabelTextView
+        android:id="@+id/item_word_learn_ltv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/item_word_icon"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        app:radius="20dp"
+        android:gravity="center"
+        android:text="学习"
+        android:minWidth="80dp"
+        app:bg_color="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp" />
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/story_search_et"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:cursorVisible="true"
+        android:gravity="center_vertical"
+        android:hint="搜索你创建的故事"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="#ccc"
+        android:textCursorDrawable="@drawable/cursor_white" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/story_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp" />
+
+    <gui.dong.scenestory.CircleImageButton
+        android:id="@+id/fab"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@android:drawable/ic_media_play"
+        app:cib_bg_color="@color/colorAccent" />
+</FrameLayout>

@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
@@ -16,6 +17,7 @@ import com.avos.avoscloud.GetDataCallback;
 import java.io.IOException;
 import java.util.List;
 
+import gui.dong.scenestory.RecorderService;
 import gui.dong.scenestory.bean.Story;
 import gui.dong.scenestory.utils.FileUtil;
 import io.realm.Realm;
@@ -52,6 +54,7 @@ public class FetchStoryTask extends IntentService {
                 @Override
                 public void done(List<AVObject> list, AVException e) {
                     if(e == null || !list.isEmpty()){
+                        Log.e("test","story:"+list.size());
                         for(AVObject avObject:list){
                             Story story = new Story();
                             story.setObjId(avObject.getObjectId());
@@ -73,7 +76,7 @@ public class FetchStoryTask extends IntentService {
             @Override
             public void done(byte[] bytes, AVException e) {
                 if(e == null){
-                    String path =System.currentTimeMillis()+".MP4";
+                    String path = RecorderService.getSaveDirectory()+System.currentTimeMillis()+".MP4";
                     try {
                         story.setLocalPath(path);
                         FileUtil.createFile(bytes,path);

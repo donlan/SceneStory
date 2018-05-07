@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/user_title"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="账户中心"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/head_default"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_title" />
+
+    <TextView
+        android:id="@+id/user_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="昵称"
+        android:textColor="#333"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/avatar"
+        app:layout_constraintLeft_toRightOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="@id/avatar" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/blue_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/avatar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/avatar" />
+
+
+    <View
+        android:id="@+id/divider_one"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#ddd"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/avatar" />
+
+    <ImageView
+        android:id="@+id/user_story_img"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/u128"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/user_story_tv"
+        app:layout_constraintTop_toBottomOf="@id/divider_one" />
+
+    <TextView
+        android:id="@+id/user_story_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12\n视频个数"
+        app:layout_constraintBottom_toBottomOf="@id/user_story_img"
+        app:layout_constraintLeft_toRightOf="@id/user_story_img"
+        app:layout_constraintRight_toLeftOf="@+id/user_word_img"
+        app:layout_constraintTop_toTopOf="@id/user_story_img" />
+
+
+    <ImageView
+        android:id="@+id/user_word_img"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/u131"
+        app:layout_constraintLeft_toRightOf="@id/user_story_tv"
+        app:layout_constraintRight_toLeftOf="@+id/user_word_tv"
+        app:layout_constraintTop_toBottomOf="@id/divider_one" />
+
+    <TextView
+        android:id="@+id/user_word_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12\n视频个数"
+        app:layout_constraintBottom_toBottomOf="@id/user_word_img"
+        app:layout_constraintLeft_toRightOf="@id/user_word_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/user_word_img" />
+
+
+    <View
+        android:id="@+id/divider_two"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#ddd"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_word_img" />
+
+    <ImageView
+        android:id="@+id/user_rang_img"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/u137"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/user_rang_tv"
+        app:layout_constraintTop_toBottomOf="@id/divider_two" />
+
+    <TextView
+        android:id="@+id/user_rang_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12\n视频个数"
+        app:layout_constraintBottom_toBottomOf="@id/user_rang_img"
+        app:layout_constraintLeft_toRightOf="@id/user_rang_img"
+        app:layout_constraintRight_toLeftOf="@+id/user_creative_img"
+        app:layout_constraintTop_toTopOf="@id/user_rang_img" />
+
+
+    <ImageView
+        android:id="@+id/user_creative_img"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/u141"
+        app:layout_constraintLeft_toRightOf="@id/user_rang_tv"
+        app:layout_constraintRight_toLeftOf="@+id/user_creative_tv"
+        app:layout_constraintTop_toBottomOf="@id/divider_two" />
+
+    <TextView
+        android:id="@+id/user_creative_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12\n视频个数"
+        app:layout_constraintBottom_toBottomOf="@id/user_creative_img"
+        app:layout_constraintLeft_toRightOf="@id/user_creative_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/user_creative_img" />
+
+    <View
+        android:id="@+id/divider_three"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#ddd"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_creative_img" />
+
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/study_word_img"
+        android:layout_marginTop="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/u145"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_three" />
+
+    <TextView
+        android:id="@+id/study_word_tv"
+        android:text="我学习的词汇"
+        android:textColor="#333"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@id/study_word_img"
+        app:layout_constraintBottom_toBottomOf="@id/study_word_img"
+        app:layout_constraintTop_toTopOf="@id/study_word_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/blue_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/study_word_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/study_word_img" />
+
+    <View
+        android:id="@+id/divider_four"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#ddd"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/study_word_img" />
+
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/my_story_img"
+        android:layout_marginTop="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/u150"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_four" />
+
+    <TextView
+        android:id="@+id/my_story_tv"
+        android:text="我收藏的视频"
+        android:textColor="#333"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@id/my_story_img"
+        app:layout_constraintBottom_toBottomOf="@id/my_story_img"
+        app:layout_constraintTop_toTopOf="@id/my_story_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/blue_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/my_story_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/my_story_img" />
+
+</android.support.constraint.ConstraintLayout>

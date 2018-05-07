@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="学习中心"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+        <ImageView
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:src="@drawable/bar_left"
+            android:background="@color/colorPrimary"
+            android:id="@+id/back"
+            android:layout_width="56dp"
+            android:layout_height="56dp" />
+    </FrameLayout>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/study_course_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

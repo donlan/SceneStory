@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="gui.dong.scenestory">
+
+
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <application
+        tools:replace="android:theme"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/App.NoActionBar">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
         <activity
             android:name=".ui.LoginActivity"
             android:label="登录"
-            android:theme="@style/AppTheme">
+            android:theme="@style/App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,18 +40,33 @@
         </activity>
         <activity android:name=".ui.MainActivity"
             android:label="故事中心"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/App.NoActionBar"
             />
         <activity android:name=".ui.CreateStoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/App.NoActionBar"
             android:screenOrientation="landscape"
             />
         <activity android:name=".ui.StoryPlayActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/App.NoActionBar"
             android:screenOrientation="landscape"/>
         <activity android:name=".ui.RegisterActivity"
             android:label="注册"
+            android:theme="@style/App"
+            />
+        <activity android:name=".ui.MeProfileActivity"
+            android:theme="@style/App.NoActionBar"
+            />
+        <activity android:name=".ui.WordStudyActivity"
+            android:theme="@style/App.NoActionBar"
+            />
+        <activity android:name=".ui.MyLearnedWordActivity"
+            android:theme="@style/App.NoActionBar"
+            />
+        <activity android:name=".ui.MyStoryActivity"
+            android:theme="@style/App.NoActionBar"
             />
 
         <service android:name=".RecorderService"

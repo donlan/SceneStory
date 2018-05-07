@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/commit_no_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/commit_yes_icon"
+        android:src="@drawable/u115"
+        android:layout_width="0dp"
+        android:layout_height="100dp" />
+
+    <ImageView
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/commit_no_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/commit_yes_icon"
+        android:src="@drawable/u114"
+        android:layout_width="0dp"
+        android:layout_height="100dp" />
+    <TextView
+        app:layout_constraintRight_toLeftOf="@+id/commit_yes_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/commit_no_icon"
+        android:id="@+id/commit_no_tv"
+        android:text="继续学习"
+        android:textColor="#444"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/commit_no_tv"
+        app:layout_constraintTop_toBottomOf="@id/commit_no_icon"
+        android:id="@+id/commit_yes_tv"
+        android:text="已学会"
+        android:textColor="#444"
+        android:textSize="16sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+</android.support.constraint.ConstraintLayout>

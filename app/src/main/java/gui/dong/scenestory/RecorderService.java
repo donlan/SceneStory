@@ -136,7 +136,7 @@ public class RecorderService extends Service {
      *
      * @return 视频保存的目录
      */
-    public String getSaveDirectory() {
+    public static String getSaveDirectory() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             String rootDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "story" + "/";
 
