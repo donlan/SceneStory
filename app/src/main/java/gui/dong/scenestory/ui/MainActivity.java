@@ -24,7 +24,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private int curTab = 1;
+    //底部三个导航图片按钮
     private ImageView[] tab = new ImageView[3];
+    /**
+     * 一个fragment就是一个页面
+     */
     private Fragment[] fragments = new Fragment[3];
     @Override
     protected void onNewIntent(Intent intent) {
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //如果是点击退出登录跳转到这个页面，则直接关闭页面退出
         if(getIntent().getBooleanExtra("logout",false)){
             finish();
             startActivity(new Intent(this,LoginActivity.class));
@@ -72,9 +77,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tab[2] = findViewById(R.id.user_tab_img);
         tab[2].setOnClickListener(this);
         tab[1].setBackgroundColor(0xffd7d7d7);
+        /**
+         * 初始化三个页面：学习，故事，个人中心
+         */
         fragments[0]= new StudyFragment();
         fragments[1] =new StoryFragment();
         fragments[2] = new UserFragment();
+        //通过FragmentManager管理三个页面的显示或隐藏
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container,fragments[0])
                 .add(R.id.container,fragments[1])
@@ -106,11 +115,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(thisTab ==-1 && thisTab==curTab){
             return;
         }
+        //点击底部的切换图标的时候，判断需要显示哪一个页面
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.hide(fragments[curTab])
                 .show(fragments[thisTab]);
         transaction.commit();
+        //去除上一次点击的图标的颜色（透明色）
         tab[curTab].setBackgroundColor(0x00ffffff);
+        //当前选中的图标，设置灰色背景
         tab[thisTab].setBackgroundColor(0xffd7d7d7);
         curTab = thisTab;
     }

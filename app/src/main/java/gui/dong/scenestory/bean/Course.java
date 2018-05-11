@@ -6,7 +6,9 @@ import java.util.UUID;
 
 import io.realm.RealmObject;
 
-
+/**
+ * 课程实体类
+ */
 public class Course extends RealmObject {
 
     private String objId;

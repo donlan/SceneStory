@@ -56,7 +56,9 @@ public class MeProfileActivity extends AppCompatActivity implements View.OnClick
             }
         });
         AVUser avUser = AVUser.getCurrentUser();
+        //设置昵称
         nicknameEt.setText(avUser.getString("nickname"));
+        //性别设置
         int gender = avUser.getInt("gender");
         if (gender == 1) {
             sexGroup.check(R.id.sex_rb_boy);
@@ -110,6 +112,7 @@ public class MeProfileActivity extends AppCompatActivity implements View.OnClick
                         .apply(new RequestOptions().error(R.drawable.logo).circleCrop())
                         .into(avatar);
                 try {
+                    //上传头像图片
                     final AVFile avFile = AVFile.withFile(FileUtils.PathToFileName(path),new File(path));
                     avFile.saveInBackground(new SaveCallback() {
                         @Override
@@ -140,15 +143,18 @@ public class MeProfileActivity extends AppCompatActivity implements View.OnClick
     private void updateProfile() {
         AVUser avUser = AVUser.getCurrentUser();
         boolean hasModify = false;
+        //如果昵称改变则更新昵称
         if (avUser.getString("nickname")==null || !avUser.getString("nickname").equals(nicknameEt.getText().toString())) {
             hasModify = true;
             avUser.put("nickname", nicknameEt.getText().toString());
         }
+        //如果更新了性别，更新到后台
         int sex = sexGroup.getCheckedRadioButtonId() == R.id.sex_rb_boy ? 1 : 0;
         if (sex != avUser.getInt("gender")) {
             avUser.put("gender", sex);
             hasModify = true;
         }
+        //有改变才更新到后台
         if (hasModify) {
             avUser.saveInBackground();
         }

@@ -17,7 +17,9 @@ import gui.dong.scenestory.bean.Word;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-
+/**
+ * 自己算会的单词页面
+ */
 public class MyLearnedWordActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -44,6 +46,7 @@ public class MyLearnedWordActivity extends AppCompatActivity {
 
     private void initData() {
         realm = Realm.getDefaultInstance();
+        //查找本地数据库素有已经学会的单词
         RealmResults<Word> words = realm.where(Word.class)
                 .equalTo("isLearned",true)
                 .findAll();

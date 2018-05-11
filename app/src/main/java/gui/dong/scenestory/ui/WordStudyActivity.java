@@ -17,7 +17,9 @@ import gui.dong.scenestory.R;
 import gui.dong.scenestory.bean.Word;
 import io.realm.Realm;
 
-
+/**
+ * 单词学习页面
+ */
 public class WordStudyActivity extends AppCompatActivity implements LearnCommitFragment.OnCommitClickListener {
 
     private Realm realm;
@@ -55,6 +57,7 @@ public class WordStudyActivity extends AppCompatActivity implements LearnCommitF
             }
         });
 
+        //弹出时候学会的选择页面
         findViewById(R.id.learned_ok_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +77,7 @@ public class WordStudyActivity extends AppCompatActivity implements LearnCommitF
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //加载单词图片
             Glide.with(this)
                     .load(word.getIconUrl())
                     .into(icon);
@@ -92,6 +96,10 @@ public class WordStudyActivity extends AppCompatActivity implements LearnCommitF
         }
     }
 
+    /**
+     * 弹出是否学会页面的回调
+     * @param yes true说明是点击了学会
+     */
     @Override
     public void onCommitClick(boolean yes) {
         if(yes){

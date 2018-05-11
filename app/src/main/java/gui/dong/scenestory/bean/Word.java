@@ -4,14 +4,26 @@ import com.avos.avoscloud.AVObject;
 
 import io.realm.RealmObject;
 
+/**
+ * 单词实体类
+ */
 public class Word extends RealmObject {
     private String id;
+    /**
+     * 对应于课程的id，用于判定是哪一个课程的词汇
+     */
     private String courseId;
     private String name;
     private String enName;
     private int iconId;
+    /**
+     * 单词图标URL地址
+     */
     private String iconUrl;
     private String pinyin;
+    /**
+     * 英文发音的MP3文件URL地址
+     */
     private String enSoundUrl;
     private boolean isLearned;
 

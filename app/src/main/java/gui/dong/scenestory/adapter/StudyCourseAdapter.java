@@ -13,12 +13,7 @@ import gui.dong.scenestory.R;
 import gui.dong.scenestory.bean.Course;
 
 /**
- * @author 梁桂栋
- * @version 1.0
- * @date 2018/5/6  0:20.
- * e-mail 760625325@qq.com
- * GitHub: https://github.com/donlan
- * description: gui.dong.scenestory.adapter
+ * 课程适配器
  */
 public class StudyCourseAdapter extends BaseQuickAdapter<Course, BaseViewHolder> {
     public StudyCourseAdapter(@Nullable List<Course> data) {
@@ -28,9 +23,11 @@ public class StudyCourseAdapter extends BaseQuickAdapter<Course, BaseViewHolder>
     @Override
     protected void convert(BaseViewHolder helper, Course item) {
         ImageView icon = helper.getView(R.id.item_course_icon);
+        //课程图标
         Glide.with(icon)
                 .load(item.getIconUrl())
                 .into(icon);
+        //课程名
         helper.setText(R.id.item_course_name,item.getName());
         helper.setText(R.id.item_course_intro,"词汇数："+item.getWordCount());
     }

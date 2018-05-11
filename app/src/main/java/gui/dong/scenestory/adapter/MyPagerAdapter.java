@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+/**
+ * viewpager 适配器
+ */
 public class MyPagerAdapter extends PagerAdapter {
 
 
