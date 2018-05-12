@@ -33,6 +33,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     private TextView rangTv;
     private TextView creativeTv;
     private Realm realm;
+    private AVUser avUser;
 
     @Nullable
     @Override
@@ -44,6 +45,8 @@ public class UserFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.study_word_tv).setOnClickListener(this);
         view.findViewById(R.id.my_story_img).setOnClickListener(this);
         view.findViewById(R.id.my_story_tv).setOnClickListener(this);
+        view.findViewById(R.id.logout).setOnClickListener(this);
+        view.findViewById(R.id.reset_password).setOnClickListener(this);
         avatar = view.findViewById(R.id.avatar);
         nicknameTv = view.findViewById(R.id.user_nickname);
         storyCountTv = view.findViewById(R.id.user_story_tv);
@@ -55,27 +58,25 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
-        AVUser avUser = AVUser.getCurrentUser();
+        avUser = AVUser.getCurrentUser();
         realm = Realm.getDefaultInstance();
-        if(avUser.getAVFile("avatar") != null) {
-            Glide.with(this)
-                    .load(avUser.getAVFile("avatar").getUrl())
-                    .apply(new RequestOptions().error(R.drawable.logo))
-                    .into(avatar);
-        }
-        nicknameTv.setText(TextUtils.isEmpty(avUser.getString("nickname")) ? avUser.getUsername() : avUser.getString("nickname"));
-        long storyCount = realm.where(Story.class).count();
-        long wordCount = realm.where(Word.class).equalTo("isLearned",true).count();
-        storyCountTv.setText(storyCount+"个视频");
-        wordCountTv.setText(wordCount+"个词汇");
-        creativeTv.setText("创造力 "+(storyCount+wordCount));
-        rangTv.setText("我的排名 1");
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            /**
+             * 退出登录
+             */
+            case R.id.logout:
+                AVUser.logOut();
+                getActivity().finish();
+                break;
+            case R.id.reset_password:
+                //重置密码
+                startActivity(new Intent(getContext(),ResetPasswordActivity.class));
+                break;
             case R.id.avatar:
             case R.id.user_nickname:
                 startActivity(new Intent(getContext(), MeProfileActivity.class));
@@ -89,6 +90,25 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getContext(), MyStoryActivity.class));
                 break;
             default:
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        nicknameTv.setText(TextUtils.isEmpty(avUser.getString("nickname")) ? avUser.getUsername() : avUser.getString("nickname"));
+        long storyCount = realm.where(Story.class).count();
+        long wordCount = realm.where(Word.class).equalTo("isLearned", true).count();
+        storyCountTv.setText(storyCount + "个视频");
+        wordCountTv.setText(wordCount + "个词汇");
+        creativeTv.setText("创造力 " + (storyCount + wordCount));
+        rangTv.setText("我的排名 1");
+        if (avUser.getAVFile("avatar") != null) {
+            Glide.with(this)
+                    .load(avUser.getAVFile("avatar").getUrl())
+                    .apply(new RequestOptions().error(R.drawable.logo)
+                            .circleCrop())
+                    .into(avatar);
         }
     }
 

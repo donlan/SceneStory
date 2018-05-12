@@ -11,22 +11,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import gui.dong.scenestory.R;
 import gui.dong.scenestory.bean.Story;
-import io.realm.RealmResults;
 
-public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> {
+public class FavoriteStoryAdapter extends RecyclerView.Adapter<FavoriteStoryAdapter.ViewHolder> {
 
-    private boolean isShowCache;
-    private RealmResults<Story> cache;
-    private RealmResults<Story> stories;
+    private List<Story> stories;
     private OnStoryClick onStoryCilck;
 
     public void setOnStoryCilck(OnStoryClick onStoryCilck) {
         this.onStoryCilck = onStoryCilck;
     }
 
-    public StoryAdapter(RealmResults<Story> stories) {
+    public FavoriteStoryAdapter(List<Story> stories) {
         this.stories = stories;
     }
 
@@ -44,26 +43,21 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
         holder.nameTv.setText(stories.get(position).getName());
     }
 
-    public void setCache(RealmResults<Story> stories){
-        cache = stories;
-        setShowCache(true);
-    }
 
-    public boolean isShowCache() {
-        return isShowCache;
-    }
-
-    public void setShowCache(boolean showCache) {
-        isShowCache = showCache;
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemCount() {
-        if(isShowCache){
-            return cache == null ? 0 : cache.size();
-        }
         return stories == null ? 0 : stories.size();
+    }
+
+    public void update(Story story) {
+        for(int i = 0;i<getItemCount();i++){
+            if(story.getId().equals(stories.get(i).getId())){
+                stories.get(i).setLocalPath(story.getLocalPath());
+                notifyItemChanged(i);
+                break;
+            }
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -81,20 +75,8 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
                         onStoryCilck.onStoryClicked(stories.get(getLayoutPosition()),0);
                     }
                 });
-                itemView.findViewById(R.id.story_del_bin).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onStoryCilck.onStoryClicked(stories.get(getLayoutPosition()),1);
-
-                    }
-                });
-                itemView.findViewById(R.id.story_collect).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onStoryCilck.onStoryClicked(stories.get(getLayoutPosition()),2);
-
-                    }
-                });
+                itemView.findViewById(R.id.story_del_bin).setVisibility(View.GONE);
+                itemView.findViewById(R.id.story_collect).setVisibility(View.GONE);
             }
         }
 
@@ -104,6 +86,6 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
     }
 
     public interface OnStoryClick {
-        void onStoryClicked(Story story,int action);
+        void onStoryClicked(Story story, int action);
     }
 }

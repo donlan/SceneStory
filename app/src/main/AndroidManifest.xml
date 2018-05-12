@@ -68,6 +68,10 @@
         <activity android:name=".ui.MyStoryActivity"
             android:theme="@style/App.NoActionBar"
             />
+        <activity android:name=".ui.ResetPasswordActivity"
+            android:label="重置密码"
+            android:theme="@style/App"
+            />
 
         <service android:name=".RecorderService"
             />

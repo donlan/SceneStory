@@ -6,17 +6,32 @@
     app:cardCornerRadius="2dp">
 
     <ImageView
+        android:src="@color/bar_grey"
         android:id="@+id/story_img"
         android:layout_width="match_parent"
         android:layout_height="@dimen/story_item_height" />
     <ImageView
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="8dp"
         android:id="@+id/story_del_bin"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:layout_gravity="end"
         android:background="@drawable/story_bin_del_bg"
         android:tint="@color/colorAccent"
-        android:src="@drawable/bin"
+        android:src="@drawable/ic_delete"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+    <ImageView
+        android:layout_marginTop="8dp"
+        android:background="@drawable/story_bin_del_bg"
+        android:layout_marginRight="60dp"
+        android:id="@+id/story_collect"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:layout_gravity="end"
+        android:src="@drawable/icon_collect_press"
         android:layout_width="50dp"
         android:layout_height="50dp" />
     <TextView

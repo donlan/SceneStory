@@ -15,8 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SaveCallback;
 
 import gui.dong.scenestory.R;
 import gui.dong.scenestory.adapter.StoryAdapter;
@@ -78,6 +82,7 @@ public class StoryFragment extends Fragment implements StoryAdapter.OnStoryClick
 
         //查找创建了的所有场景故事
         stories = Realm.getDefaultInstance().where(Story.class)
+                .equalTo("creatorId",AVUser.getCurrentUser().getUsername())
                 .findAllAsync();
         //数据库中的场景故事发生变更后，会进行回调，此时刷新列表就可显示最新的场景故事了
         stories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<Story>>() {
@@ -102,7 +107,7 @@ public class StoryFragment extends Fragment implements StoryAdapter.OnStoryClick
             Intent intent = new Intent(getContext(), StoryPlayActivity.class);
             intent.putExtra("storyId", story.getId());
             startActivity(intent);
-        }else{
+        }else if(action == 1){
             //点击了场景故事的右上角删除按钮，提示是否删除该场景故事
             new AlertDialog.Builder(getContext())
                     .setMessage("确定要删除这个故事视频吗？")
@@ -126,6 +131,19 @@ public class StoryFragment extends Fragment implements StoryAdapter.OnStoryClick
                     })
                     .setNegativeButton("取消",null)
                     .show();
+        }else if(action ==2){
+            AVObject avObject = AVObject.createWithoutData("Story",story.getObjId());
+            avObject.getRelation("favorite").add(AVUser.getCurrentUser());
+            avObject.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if(e == null){
+                        Toast.makeText(getContext(), "收藏成功", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), "收藏失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 

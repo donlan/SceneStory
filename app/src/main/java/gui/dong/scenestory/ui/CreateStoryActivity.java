@@ -386,6 +386,10 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         if (recordService.isRunning()) {
             recordService.stopRecord();
         }
+        if(mediaPlayer!=null && mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
         unbindService(connection);
     }
 

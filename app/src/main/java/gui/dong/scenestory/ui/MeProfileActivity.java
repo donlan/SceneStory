@@ -43,8 +43,7 @@ public class MeProfileActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_me_profile);
         avatar = findViewById(R.id.avatar_img);
         avatar.setOnClickListener(this);
-        findViewById(R.id.reset_password).setOnClickListener(this);
-        findViewById(R.id.logout).setOnClickListener(this);
+        findViewById(R.id.profile_save_tv).setOnClickListener(this);
         nicknameEt = findViewById(R.id.nickname_et);
         sexGroup = findViewById(R.id.sex_rg);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -65,23 +64,17 @@ public class MeProfileActivity extends AppCompatActivity implements View.OnClick
         } else if (gender == 0) {
             sexGroup.check(R.id.sex_rb_girl);
         }
+
+        Glide.with(this)
+                .load(avUser.getAVFile("avatar")==null?"":avUser.getAVFile("avatar").getUrl())
+                .apply(new RequestOptions().error(R.drawable.logo).circleCrop())
+                .into(avatar);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        /**
-         * 退出登录
-         */
-        if (id == R.id.logout) {
-            AVUser.logOut();
-            finish();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("logout", true);
-            startActivity(intent);
-        } else if (id == R.id.reset_password) {
-            //重置密码
-        } else if (id == R.id.avatar_img) {
+        if (id == R.id.avatar_img) {
             //点击头像
             PictureSelector.create(this)
                     .openGallery(PictureMimeType.ofImage())
@@ -91,6 +84,8 @@ public class MeProfileActivity extends AppCompatActivity implements View.OnClick
                     .showCropFrame(true)
                     .cropWH(400, 400)
                     .forResult(1);
+        }else if(id==R.id.profile_save_tv){
+            updateProfile();
         }
     }
 
@@ -137,7 +132,6 @@ public class MeProfileActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        updateProfile();
     }
 
     private void updateProfile() {
@@ -156,7 +150,14 @@ public class MeProfileActivity extends AppCompatActivity implements View.OnClick
         }
         //有改变才更新到后台
         if (hasModify) {
-            avUser.saveInBackground();
+            avUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if(e == null){
+                        Toast.makeText(MeProfileActivity.this,"更新信息成功",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 }
