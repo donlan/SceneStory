@@ -57,11 +57,15 @@
              />
 
         <EditText
+            android:textColorHint="#666"
+            android:hint="输入你的昵称"
             android:background="@null"
             android:id="@+id/nickname_et"
             android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:inputType="text"
+            android:textSize="@dimen/sp_16"
             android:maxLength="10"
             />
     </LinearLayout>
@@ -90,6 +94,8 @@
             />
 
         <RadioGroup
+
+            android:layout_weight="1"
             android:id="@+id/sex_rg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -99,12 +105,16 @@
             >
 
             <RadioButton
+                android:textSize="@dimen/sp_16"
+                android:checked="true"
                 android:id="@+id/sex_rb_boy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="男" />
+                android:text="男"
+                />
 
             <RadioButton
+                android:textSize="@dimen/sp_16"
                 android:id="@+id/sex_rb_girl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

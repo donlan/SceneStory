@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import gui.dong.scenestory.R;
+import gui.dong.scenestory.bean.Course;
 import gui.dong.scenestory.bean.Story;
 import gui.dong.scenestory.bean.Word;
 import io.realm.Realm;
@@ -71,6 +72,10 @@ public class UserFragment extends Fragment implements View.OnClickListener {
              */
             case R.id.logout:
                 AVUser.logOut();
+                realm.beginTransaction();
+                realm.where(Course.class).findAll().deleteAllFromRealm();
+                realm.where(Word.class).findAll().deleteAllFromRealm();
+                realm.commitTransaction();
                 getActivity().finish();
                 break;
             case R.id.reset_password:
@@ -97,7 +102,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         nicknameTv.setText(TextUtils.isEmpty(avUser.getString("nickname")) ? avUser.getUsername() : avUser.getString("nickname"));
-        long storyCount = realm.where(Story.class).count();
+        long storyCount = realm.where(Story.class).equalTo("creatorId",AVUser.getCurrentUser().getUsername()).count();
         long wordCount = realm.where(Word.class).equalTo("isLearned", true).count();
         storyCountTv.setText(storyCount + "个视频");
         wordCountTv.setText(wordCount + "个词汇");
