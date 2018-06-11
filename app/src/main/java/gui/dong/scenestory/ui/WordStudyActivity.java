@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
 
 import java.io.IOException;
@@ -106,6 +107,9 @@ public class WordStudyActivity extends AppCompatActivity implements LearnCommitF
             realm.beginTransaction();
             word.setLearned(true);
             realm.commitTransaction();
+            AVUser avUser = AVUser.getCurrentUser();
+            avUser.put("creative",avUser.getInt("creative")+1);
+            avUser.saveInBackground();
             finish();
         }
 

@@ -48,7 +48,7 @@ public class UploadStoryTask extends IntentService {
                     .findFirst();
             if(story!=null){
                 try {
-                    AVFile avFile = AVFile.withAbsoluteLocalPath(FileUtils.PathToFileName(story.getLocalPath()),story.getLocalPath());
+                    final AVFile avFile = AVFile.withAbsoluteLocalPath(FileUtils.PathToFileName(story.getLocalPath()),story.getLocalPath());
                     avFile.save();
                     avObject = AVObject.create("Story");
                     avObject.put("name",story.getName());
@@ -59,6 +59,9 @@ public class UploadStoryTask extends IntentService {
                         @Override
                         public void done(AVException e) {
                             if(e == null){
+                                AVUser avUser = AVUser.getCurrentUser();
+                                avUser.put("creative",avUser.getInt("creative")+1);
+                                avUser.saveInBackground();
                                 Realm realm =Realm.getDefaultInstance();
                                 Story story = realm.where(Story.class)
                                         .equalTo("id",avObject.getString("id"))

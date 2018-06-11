@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CountCallback;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -115,6 +118,16 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                             .circleCrop())
                     .into(avatar);
         }
+        AVQuery<AVUser> query = new AVQuery<>("_User");
+        query.whereGreaterThan("creative",avUser.getInt("creative"));
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, AVException e) {
+                if(e == null){
+                    rangTv.setText("我的排名 "+(i+1));
+                }
+            }
+        });
     }
 
     @Override
