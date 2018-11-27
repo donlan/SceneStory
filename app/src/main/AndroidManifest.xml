@@ -31,7 +31,7 @@
         <activity
             android:name=".ui.LoginActivity"
             android:label="登录"
-            android:theme="@style/App">
+            android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

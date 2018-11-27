@@ -1,4 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="story_item_height">200dp</dimen>
+    <dimen name="main_button_radius">4dp</dimen>
+    <dimen name="tab_icon_size">30dp</dimen>
+    <dimen name="user_center_icon_size">46dp</dimen>
+    <dimen name="story_scene_size">60dp</dimen>
 </resources>

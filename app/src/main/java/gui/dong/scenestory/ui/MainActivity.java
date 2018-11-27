@@ -3,6 +3,7 @@ package gui.dong.scenestory.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tab[1].setOnClickListener(this);
         tab[2] = findViewById(R.id.user_tab_img);
         tab[2].setOnClickListener(this);
-        tab[1].setBackgroundColor(0xffd7d7d7);
         /**
          * 初始化三个页面：学习，故事，个人中心
          */
@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .hide(fragments[2])
                 .show(fragments[1])
                 .commit();
+        tab[1].setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+
     }
 
 
@@ -121,9 +123,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .show(fragments[thisTab]);
         transaction.commit();
         //去除上一次点击的图标的颜色（透明色）
-        tab[curTab].setBackgroundColor(0x00ffffff);
+        tab[curTab].setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
         //当前选中的图标，设置灰色背景
-        tab[thisTab].setBackgroundColor(0xffd7d7d7);
+        tab[thisTab].setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
         curTab = thisTab;
     }
 }

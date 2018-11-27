@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.IOException;
 
@@ -30,6 +32,7 @@ public class WordStudyActivity extends AppCompatActivity implements LearnCommitF
     private TextView pinyinTv;
     private TextView enNameTv;
     private MediaPlayer mediaPlayer;
+    private boolean oncePlay = true;
 
 
     @Override
@@ -52,9 +55,13 @@ public class WordStudyActivity extends AppCompatActivity implements LearnCommitF
         findViewById(R.id.word_en_sound).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (word != null && !mediaPlayer.isPlaying()) {
-                    mediaPlayer.start();
-                }
+                startPlaySound();
+            }
+        });
+        enNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPlaySound();
             }
         });
 
@@ -81,6 +88,7 @@ public class WordStudyActivity extends AppCompatActivity implements LearnCommitF
             //加载单词图片
             Glide.with(this)
                     .load(word.getIconUrl())
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
                     .into(icon);
             nameTv.setText(word.getName());
             pinyinTv.setText(word.getPinyin());
@@ -88,6 +96,20 @@ public class WordStudyActivity extends AppCompatActivity implements LearnCommitF
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(oncePlay){
+            startPlaySound();
+            oncePlay = false;
+        }
+    }
+
+    private void startPlaySound(){
+        if (word != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

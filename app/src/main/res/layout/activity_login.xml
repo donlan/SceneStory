@@ -18,11 +18,14 @@
         android:layout_height="wrap_content">
         <android.support.design.widget.TextInputEditText
             android:inputType="text"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@id/account_til"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -34,16 +37,19 @@
         android:layout_height="wrap_content">
         <android.support.design.widget.TextInputEditText
             android:inputType="textPassword"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
     <dong.lan.labelTextview.LabelTextView
-        app:radius="2dp"
-        android:text="登录"
-        android:textColor="#fff"
+        app:radius="@dimen/main_button_radius"
+        android:text="@string/login"
+        android:textColor="@color/colorAccent"
         android:textSize="16sp"
         android:gravity="center"
+        app:bg_color="@color/colorPrimary"
         app:layout_constraintTop_toBottomOf="@id/account_til"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -61,17 +67,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_ltv"
         android:id="@+id/tv_1"
-        android:text="还没有账号？"
+        android:text="@string/no_account_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_marginTop="16dp"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintTop_toBottomOf="@id/login_ltv"
         app:layout_constraintLeft_toRightOf="@id/tv_1"
         android:id="@+id/tv_2"
-        android:text="立即注册"
+        android:text="@string/register_now"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

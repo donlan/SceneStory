@@ -71,12 +71,13 @@ public class LoginActivity extends AppCompatActivity {
             AVUser.logInInBackground(account, password, new LogInCallback<AVUser>() {
                 @Override
                 public void done(AVUser avUser, AVException e) {
-                    loginTv.finishLoading("");
                     //登录成功直接进入主页面
                     if (e == null) {
+                        loginTv.finishLoading("登录成功");
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     } else {
+                        loginTv.finishLoading("重新登录");
                         Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
                     }
                 }

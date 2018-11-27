@@ -2,7 +2,7 @@
 
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sceneIv"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
+    android:layout_width="@dimen/story_scene_size"
+    android:layout_height="@dimen/story_scene_size"
     android:adjustViewBounds="true"
     android:scaleType="centerInside" />

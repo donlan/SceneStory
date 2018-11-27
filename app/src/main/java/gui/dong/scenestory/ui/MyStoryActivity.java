@@ -106,7 +106,7 @@ public class MyStoryActivity extends AppCompatActivity {
             @Override
             public void done(byte[] bytes, AVException e) {
                 if(e == null){
-                    String path = RecorderService.getSaveDirectory()+System.currentTimeMillis()+".MP4";
+                    String path = RecorderService.Companion.getSaveDirectory()+System.currentTimeMillis()+".MP4";
                     try {
                         story.setLocalPath(path);
                         FileUtil.createFile(bytes,path);

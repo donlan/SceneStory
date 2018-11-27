@@ -14,8 +14,8 @@
         android:hint="搜索你创建的故事"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textColorHint="#ccc"
-        android:textCursorDrawable="@drawable/cursor_white" />
+        android:textColorHint="#993e2723"
+        android:textCursorDrawable="@drawable/cursor_accent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/story_rv"
